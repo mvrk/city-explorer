@@ -34,4 +34,4 @@ Finish time: __11:00pm___
 Actual time needed to complete: __3 hours to exclude breaks and dinner time
 ___
 
-[web request-response cycle](./city_explorer_WRRC.pdf)
+[web request-response cycle](./index.html/city_explorer_WRRC.pdf)
