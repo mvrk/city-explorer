@@ -1,32 +1,42 @@
 import React from 'react';
 import axios from 'axios';
+// import Image from 'react-bootstrap/Image';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       city: '',
-      lat:'',
-      lon:'',
       cityList: [],
       cityData: {},
+      cityMap: '',
       error: false,
-      errorMessage: ''
+      errorMessage: '',
+      displayCity: false
     };
   }
 
+  handleInput = (e) => {
+    this.setState({
+      city: e.target.value
+    });
+  };
+
   handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      let cityInfo = await axios.get('https://us1.locationiq.com/v1/search.php');
 
+    try {
+      let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`;
+       console.log('abcde');
+       let cityData = await axios.get(url);
+     
       this.setState({
-        cityList: cityInfo.data.results,
-        error: false
+        displayCity: true,
+        cityData: cityData.data[0],
+        cityMap: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${cityData.data[0].lat},${cityData.data[0].lon}&zoom=12`
       });
+
     } catch (error) {
-      console.log('error: ', error)
-      console.log('error.message: ', error.message);
       this.setState({
         error: true,
         errorMessage: `An Error Occurred: ${error.response.status}`
@@ -34,45 +44,28 @@ class App extends React.Component {
     }
   };
 
-  handleCityInput = (e) => {
-    this.setState({
-      city: e.target.value
-    });
-  };
 
-  handleCitySubmit = async (e) => {
-    e.preventDefault();
-    // make my request to my API
-    let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`;
-    let cityInfo = await axios.get(url);
-    console.log(cityInfo.data);
-  }
 
   render() {
-  
-    // let cityLat = this.state.lat.map((city, idx) => {
-    //   return <li key={idx}>{city.lat}</li>;
-    // })
-    // let cityLon = this.state.lon.map((city, idx) => {
-    //   return <li key={idx}>{city.lon}</li>;
-    // })
     return (
       <>
         <h1>Data from an API</h1>
-        <form onSubmit={this.handleCitySubmit}>
+        <form as='form' onSubmit={this.handleSubmit}>
           <label>Input a City:
-            <input type="text" onInput={this.handleCityInput} />
+            <input type="text" onInput={this.handleInput} />
           </label>
           <button type="submit">Explore!</button>
         </form>
-        {this.state.error
-          // render the error message:
-          ? <p>{this.state.errorMessage}</p>
-          // render the star wars list:
-          : <ul>
-            {/* {cityLat}, {cityLon} */}
-            {/* {this.cityInfo.data} */}
-          </ul>
+        {this.state.error ? <p>{this.state.errorMessage}</p> : this.state.displayCity ?
+          <>
+            <ul>
+              <li>City: {this.state.cityData.display_name}</li>
+              <li>Latitude: {this.state.cityData.lat}</li>
+              <li>Longitude: {this.state.cityData.lon}</li>
+            </ul>
+            <img alt='' src={this.state.cityMap}></img>
+          </>
+          :''
         }
       </>
     );
