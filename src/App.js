@@ -11,10 +11,9 @@ class App extends React.Component {
       city: '',
       cityData: {},
       cityMap: '',
-      weatherData: '',
       datetime: '',
       description: '',
-      datetimeWeather: [],
+      weatherData: [],
       error: false,
       errorMessage: '',
       displayCity: false
@@ -32,7 +31,7 @@ class App extends React.Component {
     event.preventDefault();
 
     try {
-      let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.searchQuery}&format=json`;
+      let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`;
       let cityData = await axios.get(url);
 
       this.setState({
@@ -56,11 +55,15 @@ class App extends React.Component {
   };
 
   handleGetWeather = async () => {
-    let url = `${process.env.REACT_APP_SERVER}/weatherData?searchQuery=${this.state.city}`;
+    let url = `${process.env.REACT_APP_SERVER}/weather?searchQuery=${this.state.city}`;
 
     try {
       let weatherData = await axios.get(url);
       console.log(weatherData.data);
+      this.setState({
+        weatherData: weatherData.data
+      })
+
     }
     catch (error) {
       this.setState({
@@ -87,7 +90,7 @@ class App extends React.Component {
               <li>Longitude: {this.state.cityData.lon}</li>
             </ul>
             <img alt='' src={this.state.cityMap}></img>
-            <Weather datetimeWeather= {this.state.weatherData} />
+            <Weather weatherData={this.state.weatherData} />
           </>
           : ''
 
