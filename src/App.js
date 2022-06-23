@@ -42,7 +42,8 @@ class App extends React.Component {
 
         cityMap: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${cityData.data[0].lat},${cityData.data[0].lon}&zoom=12`
       });
-
+      
+      this.handleGetWeather(cityData.data[0].lat, cityData.data[0].lon);
     }
 
     catch (error) {
@@ -51,11 +52,10 @@ class App extends React.Component {
         errorMessage: `An Error Occurred: ${error.response.status}`
       });
     }
-    this.handleGetWeather();
   };
 
-  handleGetWeather = async () => {
-    let url = `${process.env.REACT_APP_SERVER}/weather?searchQuery=${this.state.city}`;
+  handleGetWeather = async (lat, lon) => {
+    let url = `${process.env.REACT_APP_SERVER}/weather?lat=${lat}&lon=${lon}`;
 
     try {
       let weatherData = await axios.get(url);
