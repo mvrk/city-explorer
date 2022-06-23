@@ -1,18 +1,23 @@
 import React from 'react';
 import axios from 'axios';
+// import Card from 'react-bootstrap/Card';
 // import Image from 'react-bootstrap/Image';
-
+import Weather from './Weather.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      searchQuery: '',
       city: '',
-      cityList: [],
       cityData: {},
       cityMap: '',
+      datetime: '',
+      description: '',
+      weatherData: [],
       error: false,
       errorMessage: '',
       displayCity: false
+
     };
   }
 
@@ -27,25 +32,46 @@ class App extends React.Component {
 
     try {
       let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`;
-       console.log('abcde');
-       let cityData = await axios.get(url);
-     
+      let cityData = await axios.get(url);
+
       this.setState({
         displayCity: true,
         cityData: cityData.data[0],
+        lat: cityData.data[0].lat,
+        lon: cityData.data[0].lon,
+
         cityMap: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${cityData.data[0].lat},${cityData.data[0].lon}&zoom=12`
       });
 
-    } catch (error) {
+    }
+
+    catch (error) {
       this.setState({
         error: true,
         errorMessage: `An Error Occurred: ${error.response.status}`
       });
     }
+    this.handleGetWeather();
   };
 
+  handleGetWeather = async () => {
+    let url = `${process.env.REACT_APP_SERVER}/weather?searchQuery=${this.state.city}`;
 
+    try {
+      let weatherData = await axios.get(url);
+      console.log(weatherData.data);
+      this.setState({
+        weatherData: weatherData.data
+      })
 
+    }
+    catch (error) {
+      this.setState({
+        error: true,
+        errorMessage: `An Error Occurred: ${error.response.status}`
+      });
+    }
+  }
   render() {
     return (
       <>
@@ -64,8 +90,10 @@ class App extends React.Component {
               <li>Longitude: {this.state.cityData.lon}</li>
             </ul>
             <img alt='' src={this.state.cityMap}></img>
+            <Weather weatherData={this.state.weatherData} />
           </>
-          :''
+          : ''
+
         }
       </>
     );
