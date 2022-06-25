@@ -32,19 +32,38 @@ class App extends React.Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
-
+    this.setState({
+      searchQuery: '',
+      // city: '',
+      cityData: {},
+      cityMap: '',
+      cityName: '',
+      datetime: '',
+      description: '',
+      weatherData: [],
+      error: false,
+      moviesData: [],
+      errorMessage: '',
+      displayCity: false
+    })
     try {
-      let url = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${this.state.city}&format=json`;
+      let url = `https://us1.locationiq.com/v1/search.php?
+      key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&
+      q=${this.state.city}&
+      format=json`;
+
       let cityData = await axios.get(url);
       console.log(cityData.data[0]);
       this.setState({
         displayCity: true,
         cityData: cityData.data[0],
-        // cityName: cityData.data[0].display_name,
         lat: cityData.data[0].lat,
         lon: cityData.data[0].lon,
 
-        cityMap: `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&center=${cityData.data[0].lat},${cityData.data[0].lon}&zoom=12`
+        cityMap: `https://maps.locationiq.com/v3/staticmap?
+        key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&
+        center=${cityData.data[0].lat},${cityData.data[0].lon}&
+        zoom=12`
       });
 
       this.handleGetWeather(cityData.data[0].lat, cityData.data[0].lon);
@@ -55,7 +74,6 @@ class App extends React.Component {
       this.setState({
         error: true,
         errorMessage: `An Error Occurred: ${error.response.status}`
-        // errorMessage: `An Error Occurred: ${error.response}`
       });
     }
   };
@@ -100,6 +118,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.weatherData);
     return (
       <>
         <h1>Data from an API</h1>
@@ -109,7 +128,8 @@ class App extends React.Component {
           </label>
           <button type="submit">Explore!</button>
         </form>
-        {this.state.error ? <p>{this.state.errorMessage}</p> : this.state.displayCity ?
+        {this.state.error && <p>{this.state.errorMessage}</p> }
+        { this.state.displayCity ?
           <>
             <ul>
               <li>City: {this.state.cityData.display_name}</li>

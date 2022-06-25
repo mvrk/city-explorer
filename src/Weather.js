@@ -8,8 +8,8 @@ class Weather extends React.Component {
       return (
         <Card.Text key={index}>
           <ListGroup variant="flush">
-            <ListGroup.Item>{display.datetime}</ListGroup.Item>
-            <ListGroup.Item>{display.description}</ListGroup.Item>
+            <ListGroup.Item>{display.time}</ListGroup.Item>
+            <ListGroup.Item>{display.forecast}</ListGroup.Item>
           </ListGroup>
         </Card.Text>
       )
