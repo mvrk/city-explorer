@@ -1,11 +1,10 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-// import WeatherDay from './WeatherDay';
-class Weather extends React.Component {
 
+class WeatherDay extends React.Component {
   render() {
-    let displayWeather = this.props.weatherData.map((display, index) => {
+    let displayWeather = this.props.dayWeather.map((display, index) => {
       return (
         <Card.Text key={index}>
           <ListGroup variant="flush">
@@ -16,9 +15,7 @@ class Weather extends React.Component {
       )
     })
     return (<Card>{displayWeather}</Card>)
-    // return (
-    // </WeatherDay >)
   }
 }
 
-export default Weather;
+export default WeatherDay;
