@@ -1,7 +1,6 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import WeatherDay from './WeatherDay';
 // import WeatherDay from './WeatherDay';
 class Weather extends React.Component {
 
