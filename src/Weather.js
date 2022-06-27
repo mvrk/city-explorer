@@ -16,6 +16,7 @@ class Weather extends React.Component {
       )
     })
     return (<Card>{displayWeather}</Card>)
+    // </WeatherDay>
   }
 }
 

@@ -132,6 +132,7 @@ class App extends React.Component {
             <input type="text" onInput={this.handleInput} />
           <button type="submit">Explore!</button>
         </Form.Group>
+        <br></br>
         {this.state.error && <p>{this.state.errorMessage}</p>}
         {this.state.displayCity ?
           <>
@@ -140,8 +141,11 @@ class App extends React.Component {
               <ListGroup.Item>Latitude: {this.state.cityData.lat}</ListGroup.Item>
               <ListGroup.Item>Longitude: {this.state.cityData.lon}</ListGroup.Item>
             </ListGroup>
+            <br></br>
             <img alt='' src={this.state.cityMap}></img>
+            <hr></hr>
             <Weather weatherData={this.state.weatherData} />
+            <hr></hr>
             {this.state.moviesData.length && <Movies moviesData={this.state.moviesData} />}
             <footer>Rui Guo@Code Fellows 2022</footer>
           </>
