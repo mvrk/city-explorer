@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-// import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 // import Image from 'react-bootstrap/Image';
 import Weather from './Weather.js';
 import Movies from './Movies.js';
+import ListGroup from 'react-bootstrap/ListGroup';
+import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -97,7 +99,6 @@ class App extends React.Component {
     }
   }
 
-
   handleGetMovie = async () => {
     let url = `${process.env.REACT_APP_SERVER}/movies?searchQuery=${this.state.city}`;
 
@@ -118,31 +119,36 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.weatherData);
+    // console.log(this.state.weatherData);
     return (
       <>
-        <h1>Data from an API</h1>
-        <form as='form' onSubmit={this.handleSubmit}>
-          <label>Input a City:
+        <header>
+          <title>City Exlorer</title>
+        </header>
+        <body>
+          <h1>City Exlorer</h1>
+          <Form.Group as='form' onSubmit={this.handleSubmit}>
+            <Form.Label as='form-label'>Input City Name:</Form.Label>
             <input type="text" onInput={this.handleInput} />
-          </label>
           <button type="submit">Explore!</button>
-        </form>
-        {this.state.error && <p>{this.state.errorMessage}</p> }
-        { this.state.displayCity ?
+        </Form.Group>
+        {this.state.error && <p>{this.state.errorMessage}</p>}
+        {this.state.displayCity ?
           <>
-            <ul>
-              <li>City: {this.state.cityData.display_name}</li>
-              <li>Latitude: {this.state.cityData.lat}</li>
-              <li>Longitude: {this.state.cityData.lon}</li>
-            </ul>
+            <ListGroup as='list-group'>
+              <ListGroup.Item>City: {this.state.cityData.display_name}</ListGroup.Item>
+              <ListGroup.Item>Latitude: {this.state.cityData.lat}</ListGroup.Item>
+              <ListGroup.Item>Longitude: {this.state.cityData.lon}</ListGroup.Item>
+            </ListGroup>
             <img alt='' src={this.state.cityMap}></img>
             <Weather weatherData={this.state.weatherData} />
             {this.state.moviesData.length && <Movies moviesData={this.state.moviesData} />}
+            <footer>Rui Guo@Code Fellows 2022</footer>
           </>
           : ''
-
         }
+      </body>
+
       </>
     );
   }
