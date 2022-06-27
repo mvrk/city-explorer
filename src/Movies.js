@@ -16,16 +16,18 @@ class Movies extends React.Component {
             <img
               src={display.image_url}
               className='img-thumbnail'
-              alt='...'
+              alt=''
               style={{ maxWidth: '24rem' }}
             />
             <ListGroup.Item>{display.popularity}</ListGroup.Item>
             <ListGroup.Item>{display.released_on}</ListGroup.Item>
-          </ListGroup>
-        </Card.Text>
+          <hr></hr>
+
+        </ListGroup>
+        </Card.Text >
       )
-    })
-    return (<Card>{displayMovies}</Card>)
+  })
+  return(<Card> { displayMovies }</Card >)
   }
 }
 
