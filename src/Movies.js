@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-
+// import Movie from './Movie';
 class Movies extends React.Component {
 
   render() {
@@ -16,18 +16,20 @@ class Movies extends React.Component {
             <img
               src={display.image_url}
               className='img-thumbnail'
-              alt=''
+              alt='No img provided'
               style={{ maxWidth: '24rem' }}
             />
             <ListGroup.Item>{display.popularity}</ListGroup.Item>
             <ListGroup.Item>{display.released_on}</ListGroup.Item>
-          <hr></hr>
+            <hr></hr>
 
-        </ListGroup>
+          </ListGroup>
         </Card.Text >
+        // {Movie} 
       )
-  })
-  return(<Card> { displayMovies }</Card >)
+    })
+    return (<Card> {displayMovies}</Card >)
+  
   }
 }
 
